@@ -1,0 +1,22 @@
+{% extends 'layout1.html' %}
+
+{% block content %}
+           <div class="container">
+            <br><br>
+            <h1 class="header center teal-text text-lighten-2">Login</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+            <br><br>
+
+          </div>
+  
+<!-- templates/registration/login.html -->
+
+
+
+</form>
+{% endblock %}
+

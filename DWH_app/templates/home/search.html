@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+          <div class="">
+            <h3 class="header center teal-text text-lighten-2">Search Results</h3>
+            <div class="row center">
+              <h5 class="header col s12 light">Below is the search result </h5>
+            </div>
+            	  <div class="row">
+				         <table>
+					        <thead>
+					          <tr>
+					              <th>No</th>
+					              <th>Name</th>
+					              <th>Type</th>
+					              <th>Price</th>
+					              <th></th>
+					          </tr>
+					        </thead>
+					        <tbody>
+					          {% for data in searchResultData %}
+    							<tr>
+					            	<td>{{ forloop.counter }}</td>
+					            	<td>{{ data.hostname}}</td>
+					            	<td>{{ data.property_type}}</td>
+					            	<td>${{data.current_price}}</td>
+					            	<th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th>
+					          	</tr>
+							  {% endfor %}
+					        </tbody>
+					      </table>
+            </div>
+
+ </div>
+
+{% endblock %}

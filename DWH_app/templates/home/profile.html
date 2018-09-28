@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+      <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+          <div class="container">
+            <br><br>
+            <h4 class="header  teal-text text-lighten-2">Profile</h4>
+            <h5 class="header col s12  light"><b> {{ user }}</b> Below are your previous searches</h5>
+            <div class="">
+                <div class="">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Key</th>
+                        <th>Date</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in searchResultData %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>              
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+{% endblock %}
