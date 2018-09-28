@@ -1,1 +1,1 @@
-web: gunicorn xyz.wsgi
+web: gunicorn DWH_tool.wsgi
