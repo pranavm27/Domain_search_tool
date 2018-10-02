@@ -76,7 +76,7 @@ def profile(request):
 	return render(request, 'home/profile.html',{
 		'title': 'Demo App',
 			'showLogin' : 'false',
-			'showLogout' : 'falaSe',
+			'showLogout' : 'true',
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
