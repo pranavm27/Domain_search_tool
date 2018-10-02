@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Searches
+from .models import Searches, Campaigns
 import requests
 
 def index(request):
@@ -73,6 +73,8 @@ def saveSearchKey(request):
 
 def profile(request):
 	savedSearckKeys =  Searches.objects.all()
+	savedCampaigns = Campaigns.objects.all()
+	
 	return render(request, 'home/profile.html',{
 		'title': 'Demo App',
 			'showLogin' : 'false',
@@ -80,7 +82,8 @@ def profile(request):
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
-			 'searchResultData' : savedSearckKeys
+			 'searchResultData' : savedSearckKeys,
+			 'savedCampaigns'	: savedCampaigns
 			})
 
 def deleteKeyword(request):
@@ -95,7 +98,7 @@ def deleteKeyword(request):
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
-			 'searchResultData' : savedSearckKeys
+			'searchResultData' : savedSearckKeys,
 			})
 
 def newCampaign(request):
@@ -110,9 +113,15 @@ def newCampaign(request):
 			})
 
 def saveCampaign(request):
-	print('here')
-	
+	campaignName =request.POST.get('campaignName' )
+	campaignType =request.POST.get('campaignType' )
+	campaignStart =request.POST.get('campaignStart' )
+	campaignEnd =request.POST.get('campaignEnd' )
+	newCampaign = Campaigns(name = campaignName , campaign_type= campaignType, start = campaignStart, end = campaignEnd )
+	newCampaign.save()
+
 	savedSearckKeys =  Searches.objects.all()
+	savedCampaigns = Campaigns.objects.all()
 	return render(request, 'home/profile.html',{
 		'title': 'Demo App',
 			'showLogin' : 'false',
@@ -120,5 +129,37 @@ def saveCampaign(request):
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
-			 'searchResultData' : savedSearckKeys
+			'searchResultData' : savedSearckKeys,
+			'savedCampaigns'	: savedCampaigns
 			})
+
+
+
+def campaignOverview(request):
+	savedCampaigns = Campaigns.objects.all()
+	return render(request, 'home/campaignOverview.html',{
+		'title': 'Demo App',
+			'showLogin' : 'false',
+			'showLogout' : 'false',
+			'showSignup' : 'false',
+			'saveSearch' : 'falase',
+			'searchKey'  : '',
+			'savedCampaigns'	: savedCampaigns
+			})
+
+def deleteCampaign(request):
+	searchKeyId = request.GET.get('id')
+	searchKey =  Campaigns.objects.get(id = searchKeyId)
+	searchKey.delete()
+	savedCampaigns = Campaigns.objects.all()
+	return render(request, 'home/campaignOverview.html',{
+		'title': 'Demo App',
+			'showLogin' : 'false',
+			'showLogout' : 'false',
+			'showSignup' : 'false',
+			'saveSearch' : 'falase',
+			'searchKey'  : '',
+			'savedCampaigns'	: savedCampaigns
+			})
+
+

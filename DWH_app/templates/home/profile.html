@@ -9,7 +9,7 @@
         <div class="card-content ">
           <span class="card-title">{{user}}'s' Campaigns  </span>
           <p>
-            <a href="#">Campaigns</a> : {{ searchResultData|length }}
+            <a href="#">Campaigns</a> : {{ savedCampaigns|length }}
             <br/>
             <a href="#">Keywords</a> : {{ searchResultData|length }}
             <br/>
@@ -43,30 +43,57 @@
    </div>
 
 
-   <div class="row">
+  <div class="row">
      <div class="col s6 m6">
-  <div class="card  ">
-    <div class="card-content">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>Keyword</th>
-                        <th>Time</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {% for data in searchResultData %}
-                    <tr>
-                      <td>{{ forloop.counter }}</td>
-                      <td>{{ data.search_key }}</td>
-                      <td>{{ data.created_on }}</td>
-                      <td><a href="/deleteKeyword?id={{ data.id }}" id="download-button" class=" ">  <i class="material-icons">close</i> </a></td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+      <div class="card  ">
+        <div class="card-content">
+            <span class="card-title"> Key Words  </span>
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Keyword</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for data in searchResultData %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ data.search_key }}</td>
+                <td>{{ data.created_on }}</td>
+                <td><a href="/deleteKeyword?id={{ data.id }}" id="download-button" class=" ">  <i class="material-icons">close</i> </a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </div></div>
+     <div class="col s6 m6">
+      <div class="card  ">
+        <div class="card-content">
+            <span class="card-title">Campaigns  </span>
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Name</th>
+                  <th>Created On</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for data in savedCampaigns %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.created_on }}</td>
+               </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
-{% endblock %}
+  {% endblock %}

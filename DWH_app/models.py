@@ -11,7 +11,7 @@ class Searches(models.Model):
 class Campaigns(models.Model):
 	"""docstring for searches"""
 	name = models.CharField(max_length=200)
-	cmapaign_type = models.CharField(max_length=200)
+	campaign_type = models.CharField(max_length=200)
 	start = models.CharField(max_length=200)
 	end = models.CharField(max_length=200)
 	created_on = models.DateTimeField(default=datetime.now, blank=True);
