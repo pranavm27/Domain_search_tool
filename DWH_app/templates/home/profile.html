@@ -1,38 +1,65 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-      <div id="index-banner" class="parallax-container">
-        <div class="section no-pad-bot">
-          <div class="container">
-            <br><br>
-            <h4 class="header  teal-text text-lighten-2">Profile</h4>
-            <h5 class="header col s12  light"><b> {{ user }}</b> Below are your previous searches</h5>
-            <div class="">
-                <div class="">
+
+<br/>
+  <div class="row">
+    <div class="col s6 m6">
+      <div class="card">
+        <div class="card-content ">
+          <span class="card-title">{{user}}'s' campaings  </span>
+          <p>
+            <a href="#">Keywords</a> : {{ searchResultData|length }}
+            <br/>
+            <a href="#">status </a> : Active
+          </p>
+        </div>
+        
+      </div>
+    </div>
+
+     <div class="col s6 m6">
+  <div class="card  ">
+    <div class="card-content">
                   <table>
                     <thead>
                       <tr>
                         <th>No</th>
-                        <th>Key</th>
-                        <th>Date</th>
-                        <th></th>
+                        <th>Keyword</th>
+                        <th>Time</th>
                       </tr>
                     </thead>
                     <tbody>
                     {% for data in searchResultData %}
                     <tr>
                       <td>{{ forloop.counter }}</td>
-                      
+                      <td>{{ data.search_key }}</td>
+                      <td>{{ data.created_on }}</td>
+                      <td><a href="/deleteKeyword?id={{ data.id }}" id="download-button" class=" ">  <i class="material-icons">close</i> </a></td>
                     </tr>
                     {% endfor %}
                   </tbody>
                 </table>
-              </div>              
-            </div>
+    </div>
+  </div></div>
+   </div>
 
-          </div>
+  <div class="row">
+    <div class="col s6 m6">
+      <div class="card">
+        <div class="card-content ">
+          <span class="card-title">Update Password  </span>
+                        <label for="icon_prefix">New Password </label>
+                    
+                      <input id="icon_telephone" type="password" class="validate">
+                      <label for="icon_telephone">Confirm  Password</label>
+                       <input id="icon_telephone" type="tel" class="validate">
+ <br/><br/>                <a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">update </a>
+                </form>
+                </div>
         </div>
+        
       </div>
-
-
+    </div>
+  </div>
 {% endblock %}

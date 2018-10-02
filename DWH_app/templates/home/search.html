@@ -2,11 +2,20 @@
 
 {% block content %}
           <div class="">
-            <h3 class="header center teal-text text-lighten-2">Search Results</h3>
+            <h3 class="header center teal-text text-lighten-2">Results</h3>
             <div class="row center">
-              <h5 class="header col s12 light">Below is the search result </h5>
+            	{% if flippaSearchResultData|length > 0 %}
+              	<h5 class="header col s12 light">{{flippaSearchResultData | length}} matches for <strong> <i>{{searchKey }} </i></strong></h5>
+              	{%  else  %}
+              	<h5 class="header col s12 light">No Result found for keyword <strong> <i>{{searchKey }} </i></strong></h5>
+              	{%  endif  %}
             </div>
             	  <div class="row">
+            	  	  		{% if user.is_authenticated == false %}
+							    {% else %}
+							        <a href="/accounts/login/" > login to see all results </a>  
+							    {% endif %}
+            	  	<div class="" style=" ">
 				         <table>
 					        <thead>
 					          <tr>
@@ -18,7 +27,8 @@
 					          </tr>
 					        </thead>
 					        <tbody>
-					          {% for data in searchResultData %}
+					          {% for data in flippaSearchResultData %}
+					          	{% if forloop.counter < 5 %}
     							<tr>
 					            	<td>{{ forloop.counter }}</td>
 					            	<td>{{ data.hostname}}</td>
@@ -26,11 +36,30 @@
 					            	<td>${{data.current_price}}</td>
 					            	<th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th>
 					          	</tr>
+					          	{% endif %}
+    								{% if forloop.counter > 5 %}
+								    	{% if user.is_authenticated  %}
+									    <tr>
+									        <td>{{ forloop.counter }}</td>
+							            	<td>{{ data.hostname}}</td>
+							            	<td>{{ data.property_type}}</td>
+							            	<td>${{data.current_price}}</td>
+							            	<th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th>
+							          	</tr>
+								    	{% endif %}
+							    	{% endif %}
 							  {% endfor %}
 					        </tbody>
 					      </table>
+  						</div>
+
+					
+           
             </div>
 
  </div>
+
+
+
 
 {% endblock %}

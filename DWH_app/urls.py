@@ -6,4 +6,5 @@ urlpatterns = [
     path('search', views.search, name='search'),
     path('saveSearchKey', views.saveSearchKey, name='saveSearchKey'),
     path('profile', views.profile, name='profile'),
+    path('deleteKeyword', views.deleteKeyword, name='profile'),
 ]

@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Searches
 import requests
-# Create your views here.
 
 def index(request):
 	if request.user.is_authenticated:
@@ -29,7 +28,9 @@ def login(request):
 
 def search(request):
 	searchKey =request.GET.get('key' )
-	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey 
+	print(searchKey)
+	print(searchKey.strip())
+	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey.replace(" ", "")
 	print(flippaApiUrl)
 	response = requests.get(flippaApiUrl)
 	searchResultData = response.json()
@@ -41,7 +42,7 @@ def search(request):
 				'showSignup' : 'false',
 				'saveSearch' : 'true',
 				'searchKey'  : searchKey,
-				'searchResultData' : searchResultData['data']
+				'flippaSearchResultData' : searchResultData['data']
 				})
 
 	return render(request, 'home/search.html',{
@@ -51,10 +52,14 @@ def search(request):
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : searchKey,
-			'searchResultData' : searchResultData['data']
+			'flippaSearchResultData' : searchResultData['data']
 			})
 
 def saveSearchKey(request):
+	searchKey = request.GET.get('key')
+	search = Searches(search_key = searchKey)
+	search.save()
+	savedSearckKeys =  Searches.objects.all()
 	return render(request, 'home/profile.html',{
 		'title': 'Demo App',
 			'showLogin' : 'false',
@@ -62,10 +67,12 @@ def saveSearchKey(request):
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
-			'searchResultData' : ''
+			'searchResultData' : savedSearckKeys
+
 			})
 
 def profile(request):
+	savedSearckKeys =  Searches.objects.all()
 	return render(request, 'home/profile.html',{
 		'title': 'Demo App',
 			'showLogin' : 'false',
@@ -73,5 +80,20 @@ def profile(request):
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
-			'searchResultData' : ''
+			 'searchResultData' : savedSearckKeys
+			})
+
+def deleteKeyword(request):
+	searchKeyId = request.GET.get('id')
+	searchKey =  Searches.objects.get(id = searchKeyId)
+	searchKey.delete()
+	savedSearckKeys =  Searches.objects.all()
+	return render(request, 'home/profile.html',{
+		'title': 'Demo App',
+			'showLogin' : 'false',
+			'showLogout' : 'falaSe',
+			'showSignup' : 'false',
+			'saveSearch' : 'falase',
+			'searchKey'  : '',
+			 'searchResultData' : savedSearckKeys
 			})
