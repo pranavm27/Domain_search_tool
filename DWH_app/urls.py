@@ -7,4 +7,6 @@ urlpatterns = [
     path('saveSearchKey', views.saveSearchKey, name='saveSearchKey'),
     path('profile', views.profile, name='profile'),
     path('deleteKeyword', views.deleteKeyword, name='profile'),
+    path('newCampaign', views.newCampaign, name='profile'),
+    path('saveCampaign', views.saveCampaign, name='profile'),
 ]

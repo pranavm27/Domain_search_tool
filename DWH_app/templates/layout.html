@@ -26,11 +26,11 @@
           <ul class="right hide-on-med-and-down">
             <li>
               {%  if saveSearch == 'true' %}
-              <a href="saveSearchKey?key={{ searchKey }}" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Save Sampaign</a>
+              <a href="saveSearchKey?key={{ searchKey }}" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Save To Sampaign</a>
               </a>
                {% endif %}
               {% if user.is_authenticated %}
-               <a href="profile" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">@{{ user }}</a>
+               <a href="profile" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">My Account</a>
               </a> 
               {% endif %}
 

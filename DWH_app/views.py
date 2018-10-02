@@ -76,7 +76,7 @@ def profile(request):
 	return render(request, 'home/profile.html',{
 		'title': 'Demo App',
 			'showLogin' : 'false',
-			'showLogout' : 'falaSe',
+			'showLogout' : 'true',
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
@@ -91,7 +91,32 @@ def deleteKeyword(request):
 	return render(request, 'home/profile.html',{
 		'title': 'Demo App',
 			'showLogin' : 'false',
-			'showLogout' : 'falaSe',
+			'showLogout' : 'false',
+			'showSignup' : 'false',
+			'saveSearch' : 'falase',
+			'searchKey'  : '',
+			 'searchResultData' : savedSearckKeys
+			})
+
+def newCampaign(request):
+	return render(request, 'home/newCampaign.html',{
+		'title': 'Demo App',
+			'showLogin' : 'false',
+			'showLogout' : 'true',
+			'showSignup' : 'false',
+			'saveSearch' : 'falase',
+			'searchKey'  : '',
+			 'searchResultData' : ''
+			})
+
+def saveCampaign(request):
+	print('here')
+	
+	savedSearckKeys =  Searches.objects.all()
+	return render(request, 'home/profile.html',{
+		'title': 'Demo App',
+			'showLogin' : 'false',
+			'showLogout' : 'false',
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',

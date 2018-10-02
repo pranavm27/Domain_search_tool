@@ -9,15 +9,41 @@
         <div class="card-content ">
           <span class="card-title">{{user}}'s' campaings  </span>
           <p>
+            <a href="#">Campaigns</a> : {{ searchResultData|length }}
+            <br/>
             <a href="#">Keywords</a> : {{ searchResultData|length }}
             <br/>
-            <a href="#">status </a> : Active
+            <a href="#">Status </a> : Active
+            <br/>
+            <a href="#">Account Type </a> : Free 
           </p>
+          <br/>
+          <a href="newCampaign" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Create New Campaign </a>
+          <a href="campaignOverview" id="download-button" class="btn-small waves-effect waves-light teal lighten-1"> Campaign Overview </a>
         </div>
-        
+
       </div>
     </div>
 
+   <div class=" ">
+    <div class="col s6 m6">
+      <div class="card">
+        <div class="card-content ">
+          <span class="card-title">Update Password  </span>
+            <label for="icon_prefix">New Password </label>
+            <input id="icon_telephone" type="password" class="validate">
+            <label for="icon_telephone">Confirm  Password</label>
+            <input id="icon_telephone" type="tel" class="validate">
+            <br/> 
+            <a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">update </a>
+          </div>
+        </div>
+      </div>
+    </div>
+   </div>
+
+
+   <div class="row">
      <div class="col s6 m6">
   <div class="card  ">
     <div class="card-content">
@@ -42,24 +68,5 @@
                 </table>
     </div>
   </div></div>
-   </div>
-
-  <div class="row">
-    <div class="col s6 m6">
-      <div class="card">
-        <div class="card-content ">
-          <span class="card-title">Update Password  </span>
-                        <label for="icon_prefix">New Password </label>
-                    
-                      <input id="icon_telephone" type="password" class="validate">
-                      <label for="icon_telephone">Confirm  Password</label>
-                       <input id="icon_telephone" type="tel" class="validate">
- <br/><br/>                <a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">update </a>
-                </form>
-                </div>
-        </div>
-        
-      </div>
-    </div>
   </div>
 {% endblock %}
