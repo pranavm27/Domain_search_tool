@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+         <div class="section no-pad-bot">
+          <div class="container">
+            <br><br>
+            <h1 class="header center teal-text text-lighten-2">Demo App</h1>
+            <div class="row center">
+              <h5 class="header col s12 light">New Account</h5>
+            </div>
+            <div class="row center">
+               <div class="row center">
+                <form class="col s12" action='saveNewUser', method='post'>
+                  {% csrf_token %}
+                  <div class="row center">
+                    <div class="input-field col s12 center">
+                      <i class="material-icons prefix">tel</i>
+                      <input id="icon_telephone" type="tel" class="validate" required name='username'>
+                      <label for="icon_telephone">username</label>
+                    </div>
+                  </div>
+                  <div class="row center">
+                    <div class="input-field col s12 center">
+                      <i class="material-icons prefix">tel</i>
+                      <input id="icon_telephone0" type="tel" class="validate" required name='email'>
+                      <label for="icon_telephone0">email</label>
+                    </div>
+                  </div>
+                  <div class="row center">
+                    <div class="input-field col s12 center">
+                      <i class="material-icons prefix">tel</i>
+                      <input id="icon_telephone1" type="tel" class="validate" required name='password'>
+                      <label for="icon_telephone1">Password</label>
+                    </div>
+                  </div>
+                  <button type='submit'> signup </button>
+                  <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Signup</a>
+                </form>
+              </div>
+            </div>
+            <br><br>
+
+          </div>
+        </div>
+ 
+
+{% endblock %}

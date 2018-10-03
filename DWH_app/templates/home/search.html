@@ -4,18 +4,14 @@
           <div class="">
             <h3 class="header center teal-text text-lighten-2">Results</h3>
             <div class="row center">
-            	{% if flippaSearchResultData|length > 0 %}
-              	<h5 class="header col s12 light">{{flippaSearchResultData | length}} matches for <strong> <i>{{searchKey }} </i></strong></h5>
+            	{% if search_list|length > 0 %}
+              	<h5 class="header col s12 light">{{search_list | length}} matches for <strong> <i>{{searchKey }} </i></strong></h5>
               	{%  else  %}
               	<h5 class="header col s12 light">No Result found for keyword <strong> <i>{{searchKey }} </i></strong></h5>
               	{%  endif  %}
             </div>
             	  <div class="row">
-            	  	  		{% if user.is_authenticated == false %}
-							    {% else %}
-							        <a href="/accounts/login/" > login to see all results </a>  
-							    {% endif %}
-            	  	<div class="" style=" ">
+            	  	<div class="col s6 m6" style=" ">
 				         <table>
 					        <thead>
 					          <tr>
@@ -27,24 +23,24 @@
 					          </tr>
 					        </thead>
 					        <tbody>
-					          {% for data in flippaSearchResultData %}
+					          {% for data in search_list %}
 					          	{% if forloop.counter < 5 %}
     							<tr>
 					            	<td>{{ forloop.counter }}</td>
-					            	<td>{{ data.hostname}}</td>
-					            	<td>{{ data.property_type}}</td>
-					            	<td>${{data.current_price}}</td>
-					            	<th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th>
-					          	</tr>
+					            	<td>{{ data.domain}}</td>
+					            	<!-- <td>{{ data.property_type}}</td> -->
+					            	<!-- <td>${{data.current_price}}</td> -->
+<!-- 					            	<th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th>
+ -->					          	</tr>
 					          	{% endif %}
     								{% if forloop.counter > 5 %}
 								    	{% if user.is_authenticated  %}
 									    <tr>
 									        <td>{{ forloop.counter }}</td>
-							            	<td>{{ data.hostname}}</td>
-							            	<td>{{ data.property_type}}</td>
-							            	<td>${{data.current_price}}</td>
-							            	<th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th>
+							            	<td>{{ data.domain}}</td>
+							            	<!-- <td>{{ data.property_type}}</td> -->
+							            	<!-- <td>${{data.current_price}}</td> -->
+							            	<!-- <th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th> -->
 							          	</tr>
 								    	{% endif %}
 							    	{% endif %}
@@ -52,7 +48,36 @@
 					        </tbody>
 					      </table>
   						</div>
+  						<div class='col-6'>
+  							   <div class=" ">
+    <div class="col s6 m6">
+      <div class="card">
+        <div class="card-content ">
+          <span class="card-title">Save Keyword to Campaign  </span>
 
+            <form action="saveToCampaign" method='post'>
+            	{% csrf_token %}
+            	<input type='hidden' name='searchKey' type='text' value='{{searchKey}}'>
+			  <select name='campaign' class="browser-default">
+			    <option value="" disabled selected>Choose your Campaign</option>
+			    {%  for i in savedCampaigns %}
+			    <option value="{{i.id}}">{{i.name}}</option>
+			    {% endfor %}
+			  </select>
+            <button type = 'submit'> save </button>
+            </form>
+            <br/> 
+            {% if user.is_authenticated %}
+            <a href="/newCampaign" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">New Campaign </a>
+            {% else  %}
+            <a href="/accounts/login/" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">New Campaign </a>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  						</div>
 					
            
             </div>
