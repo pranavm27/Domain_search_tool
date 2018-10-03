@@ -10,6 +10,33 @@
               	<h5 class="header col s12 light">No Result found for keyword <strong> <i>{{searchKey }} </i></strong></h5>
               	{%  endif  %}
             </div>
+                <div class="col s6 m6">
+      <div class="card">
+        <div class="card-content ">
+          <span class="card-title">Save Keyword to Campaign  </span>
+
+            <form action="saveToCampaign" method='post'>
+            	{% csrf_token %}
+            	<input type='hidden' name='searchKey' type='text' value='{{searchKey}}'>
+			  <select name='campaign' class="browser-default">
+			    <option value="" disabled selected>Choose your Campaign</option>
+			    {%  for i in savedCampaigns %}
+			    <option value="{{i.id}}">{{i.name}}</option>
+			    {% endfor %}
+			  </select>
+            <button type = 'submit'> save </button>
+            </form>
+            <br/> 
+            {% if user.is_authenticated %}
+            <a href="/newCampaign" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">New Campaign </a>
+            {% else  %}
+            <a href="/accounts/login/" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">New Campaign </a>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
             	  <div class="row">
             	  	<div class="col s6 m6" style=" ">
 				         <table>
@@ -46,39 +73,7 @@
 					        </tbody>
 					      </table>
   						</div>
-  						<div class='col-6'>
-  							   <div class=" ">
-    <div class="col s6 m6">
-      <div class="card">
-        <div class="card-content ">
-          <span class="card-title">Save Keyword to Campaign  </span>
 
-            <form action="saveToCampaign" method='post'>
-            	{% csrf_token %}
-            	<input type='hidden' name='searchKey' type='text' value='{{searchKey}}'>
-			  <select name='campaign' class="browser-default">
-			    <option value="" disabled selected>Choose your Campaign</option>
-			    {%  for i in savedCampaigns %}
-			    <option value="{{i.id}}">{{i.name}}</option>
-			    {% endfor %}
-			  </select>
-            <button type = 'submit'> save </button>
-            </form>
-            <br/> 
-            {% if user.is_authenticated %}
-            <a href="/newCampaign" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">New Campaign </a>
-            {% else  %}
-            <a href="/accounts/login/" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">New Campaign </a>
-            {% endif %}
-
-          </div>
-        </div>
-      </div>
-    </div>
-  						</div>
-					
-           
-            </div>
 
  </div>
 
