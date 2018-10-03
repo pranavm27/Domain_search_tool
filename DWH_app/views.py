@@ -35,11 +35,11 @@ def search(request):
 	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey.replace(" ", "")
 	godaddyUrl = 'https://api.ote-godaddy.com/v1/domains/suggest?waitMs=1000&query=' + searchKey
 
-	# response = requests.get(flippaApiUrl)
-	# flippaSearchResultData = response.json()
+	response = requests.get(flippaApiUrl)
+	flippaSearchResultData = response.json()
 
-	# for ele in flippaSearchResultData['data']:
-	# 	search_list.append({'domain' : ele['hostname'], 'api':'flippa'})
+	for ele in flippaSearchResultData['data']:
+		search_list.append({'domain' : ele['hostname'], 'api':'flippa'})
 
 	headers = { "accept": "application/json" , "Authorization": "sso-key UzQxLikm_46KxDFnbjN7cQjmw6wocia:46L26ydpkwMaKZV6uVdDWe"}
 	response = requests.get(godaddyUrl, headers=headers)
@@ -52,7 +52,7 @@ def search(request):
 
 	uid = request.user.id
 	try:
-		savedCampaigns = Campaigns.objects.get(belongs_to = uid)
+		savedCampaigns = Campaigns.objects.filter(belongs_to = uid)
 	except: 
 		savedCampaigns = []
 
