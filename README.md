@@ -16,3 +16,7 @@ pip install django
 python manage.py migrate 
 
 python manage.pu runserver
+
+
+#demo
+https://demo-domain-search-tool.herokuapp.com/search?key=dellas+seo+
