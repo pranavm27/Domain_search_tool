@@ -32,23 +32,27 @@ def search(request):
 	search_list = []
 
 	searchKey =request.GET.get('key' )
-	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey.replace(" ", "")
+	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
 	godaddyUrl = 'https://api.ote-godaddy.com/v1/domains/suggest?waitMs=1000&query=' + searchKey
 
-	response = requests.get(flippaApiUrl)
-	flippaSearchResultData = response.json()
+	try:
+		response = requests.get(flippaApiUrl)
+		flippaSearchResultData = response.json()
+		for ele in flippaSearchResultData['data']:
+			if (ele['hostname'].find(searchKey) != -1 ):
+				search_list.append({'domain' : ele['hostname'], 'api':'flippa'})
+	except:
+		print('flippa err')
 
-	for ele in flippaSearchResultData['data']:
-		search_list.append({'domain' : ele['hostname'], 'api':'flippa'})
 
 	headers = { "accept": "application/json" , "Authorization": "sso-key UzQxLikm_46KxDFnbjN7cQjmw6wocia:46L26ydpkwMaKZV6uVdDWe"}
-	response = requests.get(godaddyUrl, headers=headers)
-	godaddySearchResultData = response.json()
-	for ele in godaddySearchResultData:
-		search_list.append({'domain' : ele['domain'], 'api':'godaddy'})
-
-	print('search_list')
-	
+	try:
+		response = requests.get(godaddyUrl, headers=headers)
+		godaddySearchResultData = response.json()
+		for ele in godaddySearchResultData:
+			search_list.append({'domain' : ele['domain'], 'api':'godaddy'})	
+	except:
+		print('godaddy err')
 
 	uid = request.user.id
 	try:
@@ -62,7 +66,7 @@ def search(request):
 				'showLogin' : 'false',
 				'showLogout' : 'true',
 				'showSignup' : 'false',
-				'saveSearch' : 'true',
+				'saveSearch' : 'false',
 				'searchKey'  : searchKey,
 				'search_list' : search_list,
 				'savedCampaigns': savedCampaigns

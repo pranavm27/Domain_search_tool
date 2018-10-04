@@ -10,7 +10,7 @@
               	<h5 class="header col s12 light">No Result found for keyword <strong> <i>{{searchKey }} </i></strong></h5>
               	{%  endif  %}
             </div>
-                <div class="col s6 m6">
+      <div class="col">
       <div class="card">
         <div class="card-content ">
           <span class="card-title">Save Keyword to Campaign  </span>
@@ -36,47 +36,50 @@
           </div>
         </div>
       </div>
-    </div>
-            	  <div class="row">
-            	  	<div class="col s6 m6" style=" ">
-				         <table>
-					        <thead>
-					          <tr>
-					              <th>No</th>
-					              <th>Name</th>
-					              <th>Type</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-					          {% for data in search_list %}
-					          	{% if forloop.counter < 5 %}
-    							<tr>
-					            	<td>{{ forloop.counter }}</td>
-					            	<td>{{ data.domain}}</td>
-					            	<td>{{ data.api}}</td>
-					            	<!-- <td>${{data.current_price}}</td> -->
-<!-- 					            	<th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th>
- -->					          	</tr>
-					          	{% endif %}
-    								{% if forloop.counter > 5 %}
-								    	{% if user.is_authenticated  %}
-									    <tr>
-									        <td>{{ forloop.counter }}</td>
-							            	<td>{{ data.domain}}</td>
-							            	<td>{{ data.api}}</td>
-							            	<!-- <td>${{data.current_price}}</td> -->
-							            	<!-- <th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th> -->
-							          	</tr>
-								    	{% endif %}
-							    	{% endif %}
-							  {% endfor %}
-					        </tbody>
-					      </table>
-  						</div>
+	  <div class="row">
+	  	<div class="col s6 m6" style=" ">
+	         <table class="highlight " >
+		        <thead>
+		          <tr>
+		              <th>No</th>
+		              <th>Name</th>
+		              <th>Type</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+		          {% for data in search_list %}
+		          	{% if forloop.counter < 5 %}
+					<tr>
+		            	<td>{{ forloop.counter }}</td>
+		            	<td>{{ data.domain}}</td>
+		            	<td><span  data-badge-caption="Domain" class="new  badge deep-orange darken-3"> </span></td>
+		            	<!-- <td>${{data.current_price}}</td> -->
+	<!-- 					            	<th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th>
+	-->					          	</tr>
+		          	{% endif %}
+						{% if forloop.counter > 5 %}
+					    	{% if user.is_authenticated  %}
+						    <tr>
+						        <td>{{ forloop.counter }}</td>
+				            	<td>{{ data.domain}}</td>
+				            	<td><span  data-badge-caption="Domain" class="new  badge deep-orange darken-3"> </span></td>
+				            	<!-- <td>${{data.current_price}}</td> -->
+				            	<!-- <th><a href="#" id="download-button" class="btn-small waves-effect waves-light teal lighten-1">Buy Now </a></th> -->
+				          	</tr>
+					    	{% endif %}
+				    	{% endif %}
+				  {% endfor %}
+		        </tbody>
+		      </table>
+		      {% if user.is_authenticated == False %}
+	               <a href="accounts/login?next={{ request.get_full_path|urlencode }}"  id="" class=" "> Please Login to see more Results </a>
+		      {% endif %}
+				</div>
 
 
  </div>
 
+    </div>
 
 
 
