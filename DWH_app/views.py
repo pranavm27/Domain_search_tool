@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Searches, Campaigns
-import requests
 from django.http import HttpResponseRedirect
+from .models import Searches, Campaigns, SearchResults
+import requests
 from django.contrib.auth.models import User
 
 def index(request):
@@ -30,29 +30,8 @@ def login(request):
 
 def search(request):
 	search_list = []
-
 	searchKey =request.GET.get('key' )
-	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
-	godaddyUrl = 'https://api.ote-godaddy.com/v1/domains/suggest?waitMs=1000&query=' + searchKey
-
-	try:
-		response = requests.get(flippaApiUrl)
-		flippaSearchResultData = response.json()
-		for ele in flippaSearchResultData['data']:
-			if (ele['hostname'].find(searchKey) != -1 ):
-				search_list.append({'domain' : ele['hostname'], 'api':'flippa'})
-	except:
-		print('flippa err')
-
-
-	headers = { "accept": "application/json" , "Authorization": "sso-key UzQxLikm_46KxDFnbjN7cQjmw6wocia:46L26ydpkwMaKZV6uVdDWe"}
-	try:
-		response = requests.get(godaddyUrl, headers=headers)
-		godaddySearchResultData = response.json()
-		for ele in godaddySearchResultData:
-			search_list.append({'domain' : ele['domain'], 'api':'godaddy'})	
-	except:
-		print('godaddy err')
+	search_list = makeSearchAPICall(searchKey)
 
 	uid = request.user.id
 	try:
@@ -83,6 +62,32 @@ def search(request):
 			'savedCampaigns' : savedCampaigns
 			})
 
+def makeSearchAPICall(key):
+	search_list = []
+	searchKey = key
+	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
+	godaddyUrl = 'https://api.ote-godaddy.com/v1/domains/suggest?waitMs=1000&query=' + searchKey
+
+	try:
+		response = requests.get(flippaApiUrl)
+		flippaSearchResultData = response.json()
+		for ele in flippaSearchResultData['data']:
+			if (ele['hostname'].find(searchKey) != -1 ):
+				search_list.append({'domain' : ele['hostname'], 'api':'flippa'})
+	except:
+		print('flippa err')
+
+	headers = { "accept": "application/json" , "Authorization": "sso-key UzQxLikm_46KxDFnbjN7cQjmw6wocia:46L26ydpkwMaKZV6uVdDWe"}
+	try:
+		response = requests.get(godaddyUrl, headers=headers)
+		godaddySearchResultData = response.json()
+		for ele in godaddySearchResultData:
+			search_list.append({'domain' : ele['domain'], 'api':'godaddy'})	
+	except:
+		print('godaddy err')
+	return search_list
+
+
 def saveSearchKey(request):
 	searchKey = request.GET.get('key')
 	search = Searches(search_key = searchKey)
@@ -99,15 +104,17 @@ def saveSearchKey(request):
 			})
 
 def profile(request):
-	savedSearckKeys =  Searches.objects.all()
 	uid = request.user.id
 	userobj = User.objects.get(id=uid)
+	# savedSearckKeys =  Searches.objects.all().select_related('campaign_id') 
 
 	try:
 		savedCampaigns = Campaigns.objects.filter(belongs_to = userobj)
+		savedSearckKeys =  Searches.objects.filter(campaign_id__in = Campaigns.objects.filter(belongs_to = userobj))
 	except: 
 		savedCampaigns = []
 	
+		# savedSearckKeys = savedCampaigns.Searches.all()
 	return render(request, 'home/profile.html',{
 		'title': 'Demo App',
 			'showLogin' : 'false',
@@ -208,7 +215,16 @@ def saveToCampaign(request):
 		campaignInstance =  Campaigns.objects.get(id = campaignId)
 		search = Searches(search_key = searchKey, campaign_id = campaignInstance)
 		search.save()
-		savedSearckKeys =  Searches.objects.all()
+
+		savedSearckKeys =  Searches.objects.filter(search_key = searchKey)
+		print(savedSearckKeys)
+		searchResultlist = makeSearchAPICall(searchKey)
+
+		for i in searchResultlist:
+			# print(i['domain'])
+			result = SearchResults(result = i['domain'], search_key = savedSearckKeys[0])
+			result.save()
+
 		return HttpResponseRedirect("/profile")
 	else:
 		return HttpResponseRedirect("/")	

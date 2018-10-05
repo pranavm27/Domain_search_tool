@@ -47,30 +47,25 @@
      <div class="col s6 m6">
       <div class="card  ">
         <div class="card-content">
-            <span class="card-title"> Update Account  </span>
+            <span class="card-title"> Key Words  </span>
             <table>
               <thead>
-              
+                <tr>
+                  <th>No</th>
+                  <th>Keyword</th>
+                  <th>Time</th>
+                </tr>
               </thead>
               <tbody>
-               <tr>
-                
-                  <a href="#" id="download-button" class="btn-small waves-effect waves-light #757575 lime darken-1">Silver </a>
-                <br/>
-                <br/>
-                
-                
-                  <a href="#" id="download-button" class="btn-small waves-effect waves-light yellow darken-11">Gold </a>
-                <br/>
-                <br/>
-                
-                
-                  <a href="#" id="download-button" class="btn-small waves-effect waves-light blue-grey darken-1">Platinum </a>
-                <br/>
-                <br/>
-                
-               </tr>
-             </tbody>
+              {% for data in searchResultData %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ data.search_key }}</td>
+                <td>{{ data.created_on }}</td>
+                <td><a href="/deleteKeyword?id={{ data.id }}" id="download-button" class=" ">  <i class="material-icons">close</i> </a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
           </table>
         </div>
       </div>
@@ -101,4 +96,35 @@
       </div>
     </div>
   </div>
+       <div class="col s6 m6">
+      <div class="card  ">
+        <div class="card-content">
+            <span class="card-title"> Update Account  </span>
+            <table>
+              <thead>
+              
+              </thead>
+              <tbody>
+               <tr>
+                
+                  <a href="#" id="download-button" class="btn-small waves-effect waves-light #757575 lime darken-1">Silver </a>
+                <br/>
+                <br/>
+                
+                
+                  <a href="#" id="download-button" class="btn-small waves-effect waves-light yellow darken-11">Gold </a>
+                <br/>
+                <br/>
+                
+                
+                  <a href="#" id="download-button" class="btn-small waves-effect waves-light blue-grey darken-1">Platinum </a>
+                <br/>
+                <br/>
+                
+               </tr>
+             </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   {% endblock %}
