@@ -56,7 +56,7 @@ ROOT_URLCONF = 'DWH_tool.urls'
 LOGOUT_REDIRECT_URL = '/'
 
 CRONJOBS = [
-    ('*/5 * * * *', 'DWH_app.cron.my_scheduled_job')
+    ('0 0 0 ? * SAT *', 'DWH_app.cron.my_scheduled_job')
 ]
 
 TEMPLATES = [
