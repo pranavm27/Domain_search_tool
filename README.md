@@ -15,6 +15,10 @@ pip install django
 
 python manage.py migrate 
 
+pip install django-crontab
+
+python manage.py crontab add
+
 python manage.pu runserver
 
 
