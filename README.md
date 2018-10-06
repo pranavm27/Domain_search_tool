@@ -24,3 +24,5 @@ python manage.pu runserver
 
 #demo
 https://demo-domain-search-tool.herokuapp.com/search?key=dellas+seo+
+
+https://pypi.org/project/django-crontab/
