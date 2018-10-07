@@ -66,23 +66,22 @@ def makeSearchAPICall(key):
 	search_list = []
 	searchKey = key
 	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
-	godaddyUrl = 'https://api.ote-godaddy.com/v1/domains/suggest?waitMs=1000&query=' + searchKey
+	godaddyAPIUrl = 'https://api.ote-godaddy.com/v1/domains/suggest?waitMs=1000&query=' + searchKey
+	godaddyUrl = 'https://find.godaddy.com/domainsapi/v1/search/spins?pagestart=0&pagesize=60&key=dpp_search&q='+searchKey+'&tlds=&source=&maxsld=&pc=&ptl='
 
-	try:
-		response = requests.get(flippaApiUrl)
-		flippaSearchResultData = response.json()
-		for ele in flippaSearchResultData['data']:
-			if (ele['hostname'].find(searchKey) != -1 ):
-				search_list.append({'domain' : ele['hostname'], 'api':'flippa'})
-	except:
-		print('flippa err')
+	response = requests.get(flippaApiUrl)
+	flippaSearchResultData = response.json()
+	for ele in flippaSearchResultData['data']:
+		if (ele['hostname'].find(searchKey) != -1 ):
+			search_list.append({'domain' : ele['hostname'], 'api':'flippa.com', 'html_url' : ele['html_url']} )
 
 	headers = { "accept": "application/json" , "Authorization": "sso-key UzQxLikm_46KxDFnbjN7cQjmw6wocia:46L26ydpkwMaKZV6uVdDWe"}
 	try:
 		response = requests.get(godaddyUrl, headers=headers)
 		godaddySearchResultData = response.json()
-		for ele in godaddySearchResultData:
-			search_list.append({'domain' : ele['domain'], 'api':'godaddy'})	
+		# print(godaddySearchResultData)
+		for ele in godaddySearchResultData['Products']:
+			search_list.append({'domain' :  ''.join(searchKey.split())+'.'+ele['Tld'], 'api':'godaddy.com', 'html_url': 'https://uk.godaddy.com/dpp/find?checkAvail=0&tmskey=&domainToCheck='+searchKey})	
 	except:
 		print('godaddy err')
 	return search_list
@@ -232,13 +231,37 @@ def saveToCampaign(request):
 
 
 def newUser(request):
-	return render(request, 'home/signup.html',{
-		'title': 'Demo App',
+	try:
+		errVal = request.GET.get('err')
+		if errVal :
+			return render(request, 'home/signup.html',{
+				'title': 'Demo App',
+				'showLogin' : 'false',
+				'showLogout' : 'false',
+				'showSignup' : 'false',
+				'saveSearch' : 'falase',
+				'searchKey'  : '',
+				'message'	 : 'USERNAME ALREADY EXIST'
+				})
+		else:
+			return render(request, 'home/signup.html',{
+				'title': 'Demo App',
+				'showLogin' : 'false',
+				'showLogout' : 'false',
+				'showSignup' : 'false',
+				'saveSearch' : 'falase',
+				'searchKey'  : '',
+				'message'	 : ''
+				})
+	except :
+		return render(request, 'home/signup.html',{
+			'title': 'Demo App',
 			'showLogin' : 'false',
 			'showLogout' : 'false',
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
+			'message'	 : ''
 			})
 
 def saveNewUser(request):
@@ -246,6 +269,9 @@ def saveNewUser(request):
 	password = request.POST.get('password')
 	email = request.POST.get('email')
 
-	user = User.objects.create_user(username=username, email=email, password=password)
-
-	return HttpResponseRedirect("/")
+	try:
+		user = User.objects.create_user(username=username, email=email, password=password)
+		return HttpResponseRedirect("/")
+	except:
+		return HttpResponseRedirect("/newUser?err=1")
+		
