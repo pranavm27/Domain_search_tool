@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['demo-domain-search-tool.herokuapp.com', '127.0.0.1']
 
 INSTALLED_APPS = [
     'DWH_app',
-    'django_crontab',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
