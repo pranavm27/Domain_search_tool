@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -66,25 +67,44 @@ def makeSearchAPICall(key):
 	search_list = []
 	searchKey = key
 	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
-	godaddyAPIUrl = 'https://api.ote-godaddy.com/v1/domains/suggest?waitMs=1000&query=' + searchKey
-	godaddyUrl = 'https://find.godaddy.com/domainsapi/v1/search/spins?pagestart=0&pagesize=60&key=dpp_search&q='+searchKey+'&tlds=&source=&maxsld=&pc=&ptl='
+	# godaddyUrl = 'https://api.ote-godaddy.com/v1/domains?statuses=&statusGroups=&limit=2&marker=' + searchKey
+	godaddyAuctionUrl = 'https://uk.auctions.godaddy.com/trpSearchResults.aspx'
 
-	response = requests.get(flippaApiUrl)
-	flippaSearchResultData = response.json()
-	for ele in flippaSearchResultData['data']:
-		if (ele['hostname'].find(searchKey) != -1 ):
-			search_list.append({'domain' : ele['hostname'], 'api':'flippa.com', 'html_url' : ele['html_url']} )
-
-	headers = { "accept": "application/json" , "Authorization": "sso-key UzQxLikm_46KxDFnbjN7cQjmw6wocia:46L26ydpkwMaKZV6uVdDWe"}
 	try:
-		response = requests.get(godaddyUrl, headers=headers)
-		godaddySearchResultData = response.json()
-		# print(godaddySearchResultData)
-		for ele in godaddySearchResultData['Products']:
-			search_list.append({'domain' :  ''.join(searchKey.split())+'.'+ele['Tld'], 'api':'godaddy.com', 'html_url': 'https://uk.godaddy.com/dpp/find?checkAvail=0&tmskey=&domainToCheck='+searchKey})	
-	except:
-		print('godaddy err')
-	return search_list
+		response = requests.get(flippaApiUrl)
+		flippaSearchResultData = response.json()
+		for ele in flippaSearchResultData['data']:
+			if (ele['hostname'].find(searchKey) != -1 ):
+				search_list.append({'domain' : ele['hostname'], 'api':'flippa.com', 'html_url' : ele['html_url']} )
+	except :
+		print('flippa err')
+
+	## BAck up code for using godaddy api 
+	# try:
+	# 	headers = { "accept": "application/json" , "Authorization": "sso-key UzQxLikm_46KxDFnbjN7cQjmw6wocia:46L26ydpkwMaKZV6uVdDWe"}
+	# 	response = requests.get(godaddyUrl, headers=headers)
+	# 	godaddySearchResultData = response.json()
+	# 	# print(godaddySearchResultData)
+	# 	for ele in godaddySearchResultData['Products']:
+	# 		search_list.append({'domain' :  ''.join(searchKey.split())+'.'+ele['Tld'], 'api':'godaddy.com', 'html_url': 'https://uk.godaddy.com/dpp/find?checkAvail=0&tmskey=&domainToCheck='+searchKey})	
+	# except:
+	# 	print('godaddy err')
+
+	try:
+		headers = { "accept": "application/x-www-form-urlencoded" }
+		payload = {'t': '22', 'action': 'search', 'hidAdvSearch': 'ddlAdvKeyword:1|txtKeyword:'+ searchKey.replace(' ', ','), 'rtr': '4', 'baid': '-1', 'searchDir': '1', 'rnd': '0.4567284293006555', 'ZaYGLEV': 'ef2c269'}
+		response = requests.post(godaddyAuctionUrl, headers = headers, data= payload)
+		
+		soup = BeautifulSoup(response.content)
+		arr_list = soup.find_all("span", class_="OneLinkNoTx")
+
+		for elm in arr_list:
+			search_list.append({'domain' :  elm.text, 'api':'godaddy.com', 'html_url': 'https://auctions.godaddy.com/?plan=domainauction_tier1_012mo&transfer=1'})
+
+	except :
+		raise print('godaddy err')
+	
+	return search_list	
 
 
 def saveSearchKey(request):
