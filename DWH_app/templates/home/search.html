@@ -54,8 +54,17 @@
 		          	{% if forloop.counter < 5 %}
 					<tr>
 		            	<td>{{ forloop.counter }}</td>
-		            	<td>{{ data.domain}}</td>
-		            	<td><span  data-badge-caption="Domain" class="new  badge deep-orange darken-3"> </span></td>
+		            	<td>{{ data.domain}} </td>
+		            	<td> <span  data-badge-caption="Domain" class="new  badge deep-orange darken-3"> </span>
+		            		{% if data.tags   %}
+				            		
+			            			{% for tag in data.tags %}
+			            				{% if tag != None %}
+				            				<span  data-badge-caption="{{tag}}" class="new  badge deep-orange darken-3"> </span>
+				            			{% endif %}
+				            			{% endfor %}
+			            		{% else %}
+				            		{% endif %}</td>
 		            	
 				         <!-- <td><span  data-badge-caption="{{data.api}}" class="new  badge deep-green darken-3">  </span></td> -->
 				         <td><a target="_blank"  id="download-button" class="  btn-small waves-effect waves-light teal lighten-1"  href="{{data.html_url}}"> Buy </a></td>
@@ -68,7 +77,16 @@
 						    <tr>
 						        <td>{{ forloop.counter }}</td>
 				            	<td>{{ data.domain}}</td>
-				            	<td><span  data-badge-caption="Domain" class="new  badge deep-orange darken-3"> </span></td>
+				            	<td>
+				            		<span  data-badge-caption="Domain" class="new  badge deep-orange darken-3"> </span>
+				            		{% if data.tags   %}
+				            			{% for tag in data.tags %}
+				            				{% if tag != None%}
+				            				<span  data-badge-caption="{{tag}}" class="new  badge deep-orange darken-3"> </span>
+				            				{% endif %}
+				            			{% endfor %}
+				            		{% endif %}
+				            	</td>
 				            	<!-- <td><span  data-badge-caption="{{data.api}}" class="new  badge deep-green darken-3">  </span></td> -->
 				            	<td><a target="_blank"  id="download-button" class="  btn-small waves-effect waves-light teal lighten-1"  href="{{data.html_url}}"> Buy </a></td>
 

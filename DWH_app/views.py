@@ -67,6 +67,7 @@ def makeSearchAPICall(key):
 	search_list = []
 	searchKey = key
 	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
+	print (flippaApiUrl)
 	# godaddyUrl = 'https://api.ote-godaddy.com/v1/domains?statuses=&statusGroups=&limit=2&marker=' + searchKey
 	godaddyAuctionUrl = 'https://uk.auctions.godaddy.com/trpSearchResults.aspx'
 
@@ -74,8 +75,22 @@ def makeSearchAPICall(key):
 		response = requests.get(flippaApiUrl)
 		flippaSearchResultData = response.json()
 		for ele in flippaSearchResultData['data']:
-			if (ele['hostname'].find(searchKey) != -1 ):
-				search_list.append({'domain' : ele['hostname'], 'api':'flippa.com', 'html_url' : ele['html_url']} )
+			business_model =''
+			industry = ''
+			print(ele['business_model'])
+			print(ele['industry'])
+			try:
+				business_model = ele['business_model']
+			except :
+				business_model = -1
+
+			try:
+				industry = ele['industry']
+			except :
+				industry = -1
+
+			tags = [ business_model , industry]
+			search_list.append({'domain' : ele['hostname'], 'tags': tags,  'api':'flippa.com', 'html_url' : ele['html_url']} )
 	except :
 		print('flippa err')
 
@@ -99,11 +114,16 @@ def makeSearchAPICall(key):
 		arr_list = soup.find_all("span", class_="OneLinkNoTx")
 
 		for elm in arr_list:
-			search_list.append({'domain' :  elm.text, 'api':'godaddy.com', 'html_url': 'https://auctions.godaddy.com/?plan=domainauction_tier1_012mo&transfer=1'})
+			miid = elm.img.extract()
+			miid = miid.get('id').split('_')[1]
+			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'godaddy.com', 'html_url': 'https://in.auctions.godaddy.com/trpItemListing.aspx?miid='+miid})
 
 	except :
 		raise print('godaddy err')
 	
+	
+
+
 	return search_list	
 
 
