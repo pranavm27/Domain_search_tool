@@ -19,7 +19,7 @@ def index(request):
 		print (request.user.is_authenticated)
 		return render(request, 'home/index.html',{
 		'title': 'Demo App',
-		'showLogin' : 'true',
+		'showLogin' : 'false',
 		'showLogout' : 'false',
 		'showSignup' : 'true',
 		'searchKey'  : ' '
@@ -54,7 +54,7 @@ def search(request):
 
 	return render(request, 'home/search.html',{
 		'title': 'Demo App',
-			'showLogin' : 'true',
+			'showLogin' : 'false',
 			'showLogout' : 'falaSe',
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',

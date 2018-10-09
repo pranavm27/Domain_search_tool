@@ -98,11 +98,11 @@
 				  {% endfor %}
 		        </tbody>
 		      </table>
+				</div>
 		      {% if user.is_authenticated == False %}
 		      <br/>
 	               <a  id="download-button" class="  btn-small waves-effect waves-light teal lighten-1" href="/newUser?next={{ request.get_full_path|urlencode }}"  id="" class=" "> Signup for a free account to see all {{search_list | length}} results </a>
 		      {% endif %}
-				</div>
 
 
  </div>
