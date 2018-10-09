@@ -273,6 +273,7 @@ def saveToCampaign(request):
 def newUser(request):
 	try:
 		errVal = request.GET.get('err')
+		nextVal = request.GET.get('next')
 		if errVal :
 			return render(request, 'home/signup.html',{
 				'title': 'Demo App',
@@ -281,7 +282,8 @@ def newUser(request):
 				'showSignup' : 'false',
 				'saveSearch' : 'falase',
 				'searchKey'  : '',
-				'message'	 : 'USERNAME ALREADY EXIST'
+				'message'	 : 'USERNAME ALREADY EXIST',
+				'next'		 : nextVal
 				})
 		else:
 			return render(request, 'home/signup.html',{
@@ -291,7 +293,8 @@ def newUser(request):
 				'showSignup' : 'false',
 				'saveSearch' : 'falase',
 				'searchKey'  : '',
-				'message'	 : ''
+				'message'	 : '',
+				'next'		 : nextVal
 				})
 	except :
 		return render(request, 'home/signup.html',{
@@ -301,17 +304,19 @@ def newUser(request):
 			'showSignup' : 'false',
 			'saveSearch' : 'falase',
 			'searchKey'  : '',
-			'message'	 : ''
+			'message'	 : '',
+			'next'		 : nextVal
 			})
 
 def saveNewUser(request):
 	username = request.POST.get('username')
 	password = request.POST.get('password')
 	email = request.POST.get('email')
+	next = request.POST.get('next')
 
 	try:
 		user = User.objects.create_user(username=username, email=email, password=password)
-		return HttpResponseRedirect("/")
+		return HttpResponseRedirect("accounts/login?next="+next)
 	except:
 		return HttpResponseRedirect("/newUser?err=1")
 		

@@ -34,8 +34,14 @@
               {% if user.is_authenticated %}
                <a href="profile" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">My Account</a>
               </a> 
-              {% else %}
+              {% elif request.path != '/newUser' %}
                 <a href="newUser" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Sign up</a>
+              {% else %}
+                {% if next != None %}
+                  <a href="accounts/login/?next={{next}}" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Login</a>
+                {% else %}
+                  <a href="/" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Login</a>
+                {% endif %}
               {% endif %}
 
               {%  if showLogin == 'true' %} 
