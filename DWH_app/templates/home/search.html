@@ -55,6 +55,8 @@
 					<tr>
 		            	<td>{{ forloop.counter }}</td>
 		            	<td>{{ data.domain}} </td>
+		            	<td> <span  data-badge-caption="Domain" class="new  badge deep-green darken-3"> {{ data.api}} </span></td>
+		            	<td>
 		            	<td> <span  data-badge-caption="Domain" class="new  badge deep-orange darken-3"> </span>
 		            		{% if data.tags   %}
 				            		
@@ -77,6 +79,8 @@
 						    <tr>
 						        <td>{{ forloop.counter }}</td>
 				            	<td>{{ data.domain}}</td>
+				            	<td> <span  data-badge-caption="Domain" class="new  badge deep-green darken-3"> {{ data.api}} </span></td>
+		            	<td>
 				            	<td>
 				            		<span  data-badge-caption="Domain" class="new  badge deep-orange darken-3"> </span>
 				            		{% if data.tags   %}

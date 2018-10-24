@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from .models import Searches, Campaigns, SearchResults
 import requests
+import xml.etree.ElementTree as ET
 from django.contrib.auth.models import User
 
 def index(request):
@@ -66,19 +67,20 @@ def search(request):
 def makeSearchAPICall(key):
 	search_list = []
 	searchKey = key
-	flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
-	print (flippaApiUrl)
-	# godaddyUrl = 'https://api.ote-godaddy.com/v1/domains?statuses=&statusGroups=&limit=2&marker=' + searchKey
+	# flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
+	flippaApiUrl = 'https://flippa.com/v3/listings?search_template=most_relevant&query[keyword]='+searchKey+'&filter[property_type]=website,app,fba,business&page[size]=50&include=upgrades,tags_monetization,categories_top_level'
 	godaddyAuctionUrl = 'https://uk.auctions.godaddy.com/trpSearchResults.aspx'
-
+	sedoUrl = 'https://api.sedo.com/api/sedointerface.php?action=DomainSearch&partnerid=323505&signkey=26d24c95ed713ef6b46ed3d747e312&keyword=' + searchKey
+	enomUrl = 'https://www.enom.com/beta/api/domains/'+searchKey+'/recommended?count=50&onlyga=false'
+	
+	#try flippa
 	try:
 		response = requests.get(flippaApiUrl)
 		flippaSearchResultData = response.json()
 		for ele in flippaSearchResultData['data']:
 			business_model =''
 			industry = ''
-			print(ele['business_model'])
-			print(ele['industry'])
+			propertyType = ''
 			try:
 				business_model = ele['business_model']
 			except :
@@ -89,22 +91,56 @@ def makeSearchAPICall(key):
 			except :
 				industry = -1
 
-			tags = [ business_model , industry]
+			try:
+				propertyType = ele['property_type']
+			except :
+				propertyType = -1
+
+			tags = [ business_model , industry, propertyType]
 			search_list.append({'domain' : ele['hostname'], 'tags': tags,  'api':'flippa.com', 'html_url' : ele['html_url']} )
 	except :
 		print('flippa err')
 
-	## BAck up code for using godaddy api 
-	# try:
-	# 	headers = { "accept": "application/json" , "Authorization": "sso-key UzQxLikm_46KxDFnbjN7cQjmw6wocia:46L26ydpkwMaKZV6uVdDWe"}
-	# 	response = requests.get(godaddyUrl, headers=headers)
-	# 	godaddySearchResultData = response.json()
-	# 	# print(godaddySearchResultData)
-	# 	for ele in godaddySearchResultData['Products']:
-	# 		search_list.append({'domain' :  ''.join(searchKey.split())+'.'+ele['Tld'], 'api':'godaddy.com', 'html_url': 'https://uk.godaddy.com/dpp/find?checkAvail=0&tmskey=&domainToCheck='+searchKey})	
-	# except:
-	# 	print('godaddy err')
+	#try enom
+	try:
+		response = requests.get(enomUrl)
+		enomUrlSearchResultData = response.json()
+		for ele in enomUrlSearchResultData['suggestions']['domains']:
+			business_model = -1
+			industry = ''
+ 			
+			try:
+				industry = ele['source']
+			except :
+				industry = -1
 
+			tags = [ business_model , industry]
+			search_list.append({'domain' : ele['domain'], 'tags': [],  'api':'enom.com', 'html_url' :'https://www.enom.com/domains/search-results?query='+searchKey})
+	except :
+		print('enom err')
+
+	#try sedo
+	try:
+		headers = { "accept": " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" }
+		response = requests.get(sedoUrl)
+		sedoSearchResultData = response
+		tree = root = ET.fromstring(sedoSearchResultData.content)
+		for child in root.findall('item'):
+			business_model =''
+			industry = -1
+
+			try:
+				business_model = 'Domain'
+			except :
+				business_model = -1
+
+
+			tags = [ business_model , industry]
+			search_list.append({'domain' : child.find('domain').text, 'tags': [],  'api':'sedo.com', 'html_url' : child.find('url').text} )
+	except :
+		print('sedo err')
+
+	#try godaddy
 	try:
 		headers = { "accept": "application/x-www-form-urlencoded" }
 		payload = {'t': '22', 'action': 'search', 'hidAdvSearch': 'ddlAdvKeyword:1|txtKeyword:'+ searchKey.replace(' ', ','), 'rtr': '4', 'baid': '-1', 'searchDir': '1', 'rnd': '0.4567284293006555', 'ZaYGLEV': 'ef2c269'}
