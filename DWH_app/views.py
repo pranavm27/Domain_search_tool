@@ -72,6 +72,7 @@ def makeSearchAPICall(key):
 	godaddyAuctionUrl = 'https://uk.auctions.godaddy.com/trpSearchResults.aspx'
 	sedoUrl = 'https://api.sedo.com/api/sedointerface.php?action=DomainSearch&partnerid=323505&signkey=26d24c95ed713ef6b46ed3d747e312&keyword=' + searchKey
 	enomUrl = 'https://www.enom.com/beta/api/domains/'+searchKey+'/recommended?count=50&onlyga=false'
+	afternicUrl = 'https://www.afternic.com/search?k='+searchKey+'&tld=com'
 	
 	#try flippa
 	try:
@@ -156,6 +157,19 @@ def makeSearchAPICall(key):
 
 	except :
 		raise print('godaddy err')
+	
+	#try afternic
+	try:
+		headers = { "accept": "application/x-www-form-urlencoded" }
+		response = requests.get(afternicUrl, headers = headers)
+		
+		soup = BeautifulSoup(response.content)
+		arr_list = soup.find_all("div", class_="search-domain-wrap")
+		print(arr_list[0].text)
+		for elm in arr_list:
+			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'afternic.com', 'html_url': 'https://www.afternic.com/domain/'+elm.text})
+	except :
+		raise print('afternic err')
 	
 	
 
