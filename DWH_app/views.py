@@ -74,88 +74,88 @@ def makeSearchAPICall(key):
 	afternicUrl = 'https://www.afternic.com/search?k='+searchKey+'&tld=com'
 	
 	#try flippa
-	try:
-		response = requests.get(flippaApiUrl)
-		flippaSearchResultData = response.json()
-		for ele in flippaSearchResultData['data']:
-			business_model =''
-			industry = ''
-			propertyType = ''
-			try:
-				business_model = ele['business_model']
-			except :
-				business_model = -1
+	# try:
+	# 	response = requests.get(flippaApiUrl)
+	# 	flippaSearchResultData = response.json()
+	# 	for ele in flippaSearchResultData['data']:
+	# 		business_model =''
+	# 		industry = ''
+	# 		propertyType = ''
+	# 		try:
+	# 			business_model = ele['business_model']
+	# 		except :
+	# 			business_model = -1
 
-			try:
-				industry = ele['industry']
-			except :
-				industry = -1
+	# 		try:
+	# 			industry = ele['industry']
+	# 		except :
+	# 			industry = -1
 
-			try:
-				propertyType = ele['property_type']
-			except :
-				propertyType = -1
+	# 		try:
+	# 			propertyType = ele['property_type']
+	# 		except :
+	# 			propertyType = -1
 
-			tags = [ business_model , industry, propertyType]
-			search_list.append({'domain' : ele['hostname'], 'tags': tags,  'api':'flippa.com', 'html_url' : ele['html_url']} )
-	except :
-		print('flippa err')
+	# 		tags = [ business_model , industry, propertyType]
+	# 		search_list.append({'domain' : ele['hostname'], 'tags': tags,  'api':'flippa.com', 'html_url' : ele['html_url']} )
+	# except :
+	# 	print('flippa err')
 
-	#try enom
-	try:
-		response = requests.get(enomUrl)
-		enomUrlSearchResultData = response.json()
-		for ele in enomUrlSearchResultData['suggestions']['domains']:
-			business_model = -1
-			industry = ''
+	# #try enom
+	# try:
+	# 	response = requests.get(enomUrl)
+	# 	enomUrlSearchResultData = response.json()
+	# 	for ele in enomUrlSearchResultData['suggestions']['domains']:
+	# 		business_model = -1
+	# 		industry = ''
  			
-			try:
-				industry = ele['source']
-			except :
-				industry = -1
+	# 		try:
+	# 			industry = ele['source']
+	# 		except :
+	# 			industry = -1
 
-			tags = [ business_model , industry]
-			search_list.append({'domain' : ele['domain'], 'tags': [],  'api':'enom.com', 'html_url' :'https://www.enom.com/domains/search-results?query='+searchKey})
-	except :
-		print('enom err')
+	# 		tags = [ business_model , industry]
+	# 		search_list.append({'domain' : ele['domain'], 'tags': [],  'api':'enom.com', 'html_url' :'https://www.enom.com/domains/search-results?query='+searchKey})
+	# except :
+	# 	print('enom err')
 
-	#try sedo
-	try:
-		headers = { "accept": " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" }
-		response = requests.get(sedoUrl)
-		sedoSearchResultData = response
-		tree = root = ET.fromstring(sedoSearchResultData.content)
-		for child in root.findall('item'):
-			business_model =''
-			industry = -1
+	# #try sedo
+	# try:
+	# 	headers = { "accept": " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" }
+	# 	response = requests.get(sedoUrl)
+	# 	sedoSearchResultData = response
+	# 	tree = root = ET.fromstring(sedoSearchResultData.content)
+	# 	for child in root.findall('item'):
+	# 		business_model =''
+	# 		industry = -1
 
-			try:
-				business_model = 'Domain'
-			except :
-				business_model = -1
+	# 		try:
+	# 			business_model = 'Domain'
+	# 		except :
+	# 			business_model = -1
 
 
-			tags = [ business_model , industry]
-			search_list.append({'domain' : child.find('domain').text, 'tags': [],  'api':'sedo.com', 'html_url' : child.find('url').text} )
-	except :
-		print('sedo err')
+	# 		tags = [ business_model , industry]
+	# 		search_list.append({'domain' : child.find('domain').text, 'tags': [],  'api':'sedo.com', 'html_url' : child.find('url').text} )
+	# except :
+	# 	print('sedo err')
 
-	#try godaddy
-	try:
-		headers = { "accept": "application/x-www-form-urlencoded" }
-		payload = {'t': '22', 'action': 'search', 'hidAdvSearch': 'ddlAdvKeyword:1|txtKeyword:'+ searchKey.replace(' ', ','), 'rtr': '4', 'baid': '-1', 'searchDir': '1', 'rnd': '0.4567284293006555', 'ZaYGLEV': 'ef2c269'}
-		response = requests.post(godaddyAuctionUrl, headers = headers, data= payload)
+	# #try godaddy
+	# try:
+	# 	headers = { "accept": "application/x-www-form-urlencoded" }
+	# 	payload = {'t': '22', 'action': 'search', 'hidAdvSearch': 'ddlAdvKeyword:1|txtKeyword:'+ searchKey.replace(' ', ','), 'rtr': '4', 'baid': '-1', 'searchDir': '1', 'rnd': '0.4567284293006555', 'ZaYGLEV': 'ef2c269'}
+	# 	response = requests.post(godaddyAuctionUrl, headers = headers, data= payload)
 		
-		soup = BeautifulSoup(response.content)
-		arr_list = soup.find_all("span", class_="OneLinkNoTx")
+	# 	soup = BeautifulSoup(response.content)
+	# 	arr_list = soup.find_all("span", class_="OneLinkNoTx")
 
-		for elm in arr_list:
-			miid = elm.img.extract()
-			miid = miid.get('id').split('_')[1]
-			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'godaddy.com', 'html_url': 'https://in.auctions.godaddy.com/trpItemListing.aspx?miid='+miid})
+	# 	for elm in arr_list:
+	# 		miid = elm.img.extract()
+	# 		miid = miid.get('id').split('_')[1]
+	# 		search_list.append({'domain' :  elm.text, 'tags': [],  'api':'godaddy.com', 'html_url': 'https://in.auctions.godaddy.com/trpItemListing.aspx?miid='+miid})
 
-	except :
-		raise print('godaddy err')
+	# except :
+	# 	raise print('godaddy err')
 	
 	#try afternic
 	try:
@@ -164,6 +164,7 @@ def makeSearchAPICall(key):
 		
 		soup = BeautifulSoup(response.content)
 		arr_list = soup.find_all("div", class_="search-domain-wrap")
+		print(arr_list)
 		for elm in arr_list:
 			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'afternic.com', 'html_url': 'https://www.afternic.com/domain/'+elm.text})
 	except :
