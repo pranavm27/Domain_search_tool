@@ -25,7 +25,7 @@ SECRET_KEY = 'ml-=#dn@%h7+ute=avcxpv59*d(p)zu=!vz7uw6x=#0uz!e7hm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['demo-domain-search-tool.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['demo-domain-search-tool.herokuapp.com', '127.0.0.1', '*']
 
 
 # Application definition
