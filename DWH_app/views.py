@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from .models import Searches, Campaigns, SearchResults
 import requests
 import xml.etree.ElementTree as ET
+import difflib
 from django.contrib.auth.models import User
 
 def index(request):
@@ -169,8 +170,9 @@ def makeSearchAPICall(key):
 			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'afternic.com', 'html_url': 'https://www.afternic.com/domain/'+elm.text})
 	except :
 		raise print('afternic err')
-
-	return search_list	
+		
+	sorted_search_list = sorted(search_list, key=lambda z: difflib.SequenceMatcher(None, z['domain'].lower(),searchKey).ratio(), reverse=True)
+	return sorted_search_list
 
 
 def saveSearchKey(request):
