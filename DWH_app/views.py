@@ -171,7 +171,7 @@ def makeSearchAPICall(key):
 	except :
 		raise print('afternic err')
 		
-	sorted_search_list = sorted(search_list['domain'], key=lambda z: difflib.SequenceMatcher(None, z.lower(),searchKey).ratio(), reverse=True)
+	sorted_search_list = sorted(search_list, key=lambda z: difflib.SequenceMatcher(None, z['domain'].lower(),searchKey).ratio(), reverse=True)
 	return sorted_search_list
 
 
