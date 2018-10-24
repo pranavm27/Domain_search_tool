@@ -67,7 +67,6 @@ def search(request):
 def makeSearchAPICall(key):
 	search_list = []
 	searchKey = key
-	# flippaApiUrl = 'https://api.flippa.com/v3/listings?query=' + searchKey
 	flippaApiUrl = 'https://flippa.com/v3/listings?search_template=most_relevant&query[keyword]='+searchKey+'&filter[property_type]=website,app,fba,business&page[size]=50&include=upgrades,tags_monetization,categories_top_level'
 	godaddyAuctionUrl = 'https://uk.auctions.godaddy.com/trpSearchResults.aspx'
 	sedoUrl = 'https://api.sedo.com/api/sedointerface.php?action=DomainSearch&partnerid=323505&signkey=26d24c95ed713ef6b46ed3d747e312&keyword=' + searchKey
@@ -165,14 +164,10 @@ def makeSearchAPICall(key):
 		
 		soup = BeautifulSoup(response.content)
 		arr_list = soup.find_all("div", class_="search-domain-wrap")
-		print(arr_list[0].text)
 		for elm in arr_list:
 			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'afternic.com', 'html_url': 'https://www.afternic.com/domain/'+elm.text})
 	except :
-		raise print('afternic err')
-	
-	
-
+		raise print('afternic err')	
 
 	return search_list	
 
