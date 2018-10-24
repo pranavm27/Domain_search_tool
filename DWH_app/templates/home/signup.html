@@ -37,6 +37,19 @@
                   </div>
                   <input type='hidden' value='{{next}}' name='next'>
                   <button type='submit'> signup </button>
+                <br/>
+                <br/>
+                {% if user.is_authenticated %}
+              </a> 
+              {% elif request.path != '/newUser' %}
+                <a href="/newUser?next={{ request.get_full_path|urlencode }}" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">New here , Signup for free</a>
+              {% else %}
+                {% if next != None %}
+                  <a href="accounts/login/?next={{next}}" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Already have an account, Login</a>
+                {% else %}
+                  <a href="accounts/login/?next=/" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Already have an account, Login</a>
+                {% endif %}
+              {% endif %}
                 </form>
               </div>
             </div>

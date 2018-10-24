@@ -8,7 +8,22 @@
 				  {% csrf_token %}
 				  {{ form.as_p }}
 				  <button type="submit">Login</button>
-            <br><br>
+            <br/>
+            <br/>
+              {% if user.is_authenticated %}
+               <a href="profile" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">My Account</a>
+              </a> 
+              {% elif request.path != '/newUser' %}
+                <a href="/newUser?next={{ request.get_full_path|urlencode }}" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Sign up</a>
+              {% else %}
+                {% if next != None %}
+                  <a href="accounts/login/?next={{next}}" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Login</a>
+                {% else %}
+                  <a href="accounts/login/?next=/" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Login</a>
+                {% endif %}
+              {% endif %}
+            <br/>
+            <br/>
 		</form>
           </div>
 {% endblock %}
