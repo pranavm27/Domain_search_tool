@@ -70,8 +70,14 @@
                <a href="profile" id="download-button" class="  ">My Account</a>
               </a> 
               {% elif request.path != '/newUser' %}
-                <a href="/newUser?next={{ request.get_full_path|urlencode }}" id="download-button" class="  ">Sign up</a>
+              <a href="/newUser?next={{ request.get_full_path|urlencode }}" id="download-button" class="  ">Sign up</a>
+                {% if next != None %}
+                  <a href="accounts/login/?next={{next}}" id="download-button" class="  ">Login</a>
+                {% else %}
+                  <a href="accounts/login/?next=/" id="download-button" class="  ">Login</a>
+                {% endif %}
               {% else %}
+                <a href="/newUser?next={{ request.get_full_path|urlencode }}" id="download-button" class="  ">Sign up</a>
                 {% if next != None %}
                   <a href="accounts/login/?next={{next}}" id="download-button" class="  ">Login</a>
                 {% else %}
