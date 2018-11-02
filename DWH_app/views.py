@@ -34,7 +34,7 @@ def login(request):
 def search(request):
 	search_list = []
 	searchKey =request.GET.get('key' )
-	search_list = makeSearchAPICall(searchKey)
+	search_list = makeSearchAPICall(searchKey.replace(" ", ""))
 
 	uid = request.user.id
 	try:
@@ -174,7 +174,7 @@ def makeSearchAPICall(key):
 	sorted_search_list = sorted(search_list, key=lambda z: difflib.SequenceMatcher(None, z['domain'].lower(),searchKey).ratio(), reverse=True)
 	# filtered_search_list = (filter(lambda x: difflib.SequenceMatcher(None, x['domain'], searchKey).ratio() < 2.0, sorted_search_list))
 	for elm in sorted_search_list:
-		if difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio() < 60.0:
+		if difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio() < 70.0:
 			print(elm)
 			sorted_search_list.remove(elm)
 	return sorted_search_list
