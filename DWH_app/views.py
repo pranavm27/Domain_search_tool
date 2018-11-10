@@ -104,22 +104,22 @@ def makeSearchAPICall(key):
 		print('flippa err')
 
 	#try enom
-	# try:
-	# 	response = requests.get(enomUrl)
-	# 	enomUrlSearchResultData = response.json()
-	# 	for ele in enomUrlSearchResultData['suggestions']['domains']:
-	# 		business_model = -1
-	# 		industry = ''
+	try:
+		response = requests.get(enomUrl)
+		enomUrlSearchResultData = response.json()
+		for ele in enomUrlSearchResultData['suggestions']['domains']:
+			business_model = -1
+			industry = ''
  			
-	# 		try:
-	# 			industry = ele['source']
-	# 		except :
-	# 			industry = -1
+			try:
+				industry = ele['source']
+			except :
+				industry = -1
 
-	# 		tags = [ business_model , industry]
-	# 		search_list.append({'domain' : ele['domain'], 'tags': [],  'api':'enom.com', 'html_url' :'https://www.enom.com/domains/search-results?query='+searchKey})
-	# except :
-	# 	print('enom err')
+			tags = [ business_model , industry]
+			search_list.append({'domain' : ele['domain'], 'tags': [],  'api':'enom.com', 'html_url' :'https://www.enom.com/domains/search-results?query='+searchKey})
+	except :
+		print('enom err')
 
 	#try sedo
 	try:
@@ -174,12 +174,15 @@ def makeSearchAPICall(key):
 		
 	sorted_search_list = sorted(search_list, key=lambda z: difflib.SequenceMatcher(None, z['domain'].lower(),searchKey).ratio(), reverse=True)
 	# filtered_search_list = (filter(lambda x: difflib.SequenceMatcher(None, x['domain'], searchKey).ratio() < 2.0, sorted_search_list))
+	print(sorted_search_list)
 	filtered_search_list = []
 	for elm in sorted_search_list:
-		if difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio() >= 0.6:
-			print(difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio())
-			print(elm)
-			print(sorted_search_list.remove(elm))
+		print(elm)
+		# if difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio() >= 0.2:
+		if searchKey in elm['domain'] :
+			# print(difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio())
+			# print(elm)
+			# print(sorted_search_list.remove(elm))
 			# sorted_search_list.remove(elm)
 			filtered_search_list.append(elm)
 	print(filtered_search_list)
