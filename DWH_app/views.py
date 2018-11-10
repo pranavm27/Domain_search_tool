@@ -34,7 +34,7 @@ def login(request):
 def search(request):
 	search_list = []
 	searchKey =request.GET.get('key' )
-	search_list = makeSearchAPICall(searchKey.replace(" ", ""))
+	search_list = makeSearchAPICall(searchKey)
 
 	uid = request.user.id
 	try:
@@ -67,7 +67,8 @@ def search(request):
 
 def makeSearchAPICall(key):
 	search_list = []
-	searchKey = key
+	searchKey = key.replace(" ", "")
+	print (searchKey)
 	flippaApiUrl = 'https://flippa.com/v3/listings?search_template=most_relevant&query[keyword]='+searchKey+'&filter[property_type]=website,app,fba,business&page[size]=50&include=upgrades,tags_monetization,categories_top_level'
 	godaddyAuctionUrl = 'https://uk.auctions.godaddy.com/trpSearchResults.aspx'
 	sedoUrl = 'https://api.sedo.com/api/sedointerface.php?action=DomainSearch&partnerid=323505&signkey=26d24c95ed713ef6b46ed3d747e312&keyword=' + searchKey
@@ -163,9 +164,9 @@ def makeSearchAPICall(key):
 		headers = { "accept": "application/x-www-form-urlencoded" }
 		response = requests.get(afternicUrl, headers = headers)
 		soup = BeautifulSoup(response.content)
-		print( soup )
+		# print( soup )
 		arr_list = soup.find_all("div", class_="search-domain-wrap")
-		print( arr_list )
+		# print( arr_list )
 		for elm in arr_list:
 			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'afternic.com', 'html_url': 'https://www.afternic.com/domain/'+elm.text})
 	except :
@@ -173,11 +174,16 @@ def makeSearchAPICall(key):
 		
 	sorted_search_list = sorted(search_list, key=lambda z: difflib.SequenceMatcher(None, z['domain'].lower(),searchKey).ratio(), reverse=True)
 	# filtered_search_list = (filter(lambda x: difflib.SequenceMatcher(None, x['domain'], searchKey).ratio() < 2.0, sorted_search_list))
+	filtered_search_list = []
 	for elm in sorted_search_list:
-		if difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio() < 70.0:
+		if difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio() >= 0.6:
+			print(difflib.SequenceMatcher(None, elm['domain'], searchKey).ratio())
 			print(elm)
-			sorted_search_list.remove(elm)
-	return sorted_search_list
+			print(sorted_search_list.remove(elm))
+			# sorted_search_list.remove(elm)
+			filtered_search_list.append(elm)
+	print(filtered_search_list)
+	return filtered_search_list
 
 
 def saveSearchKey(request):
