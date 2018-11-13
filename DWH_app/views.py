@@ -104,22 +104,22 @@ def makeSearchAPICall(key):
 		print('flippa err')
 
 	#try enom
-	try:
-		response = requests.get(enomUrl)
-		enomUrlSearchResultData = response.json()
-		for ele in enomUrlSearchResultData['suggestions']['domains']:
-			business_model = -1
-			industry = ''
+	# try:
+	# 	response = requests.get(enomUrl)
+	# 	enomUrlSearchResultData = response.json()
+	# 	for ele in enomUrlSearchResultData['suggestions']['domains']:
+	# 		business_model = -1
+	# 		industry = ''
  			
-			try:
-				industry = ele['source']
-			except :
-				industry = -1
+	# 		try:
+	# 			industry = ele['source']
+	# 		except :
+	# 			industry = -1
 
-			tags = [ business_model , industry]
-			search_list.append({'domain' : ele['domain'], 'tags': [],  'api':'enom.com', 'html_url' :'https://www.enom.com/domains/search-results?query='+searchKey})
-	except :
-		print('enom err')
+	# 		tags = [ business_model , industry]
+	# 		search_list.append({'domain' : ele['domain'], 'tags': [],  'api':'enom.com', 'html_url' :'https://www.enom.com/domains/search-results?query='+searchKey})
+	# except :
+	# 	print('enom err')
 
 	#try sedo
 	try:
