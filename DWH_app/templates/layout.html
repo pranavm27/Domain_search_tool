@@ -115,6 +115,8 @@
 
      </body>
          <script type="text/javascript">
+         var count = 2;
+         var maxCount = 4;
       (function($){
         $(function(){
           $('.sidenav').sidenav();
@@ -132,7 +134,14 @@
       $(document).ready(function(){
         $('.modal').modal();
       });
-              
+      
+      $('#addNewInputBtn').click(function(){
+        count = count + 1 ;
+        $("#key"+count).css("display","block");
+        if (count === maxCount ) {
+          $('#addNewInputBtn').css("display","none");
+        };
+      });   
     </script>
   </html>
         

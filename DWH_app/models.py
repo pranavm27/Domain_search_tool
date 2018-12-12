@@ -2,6 +2,11 @@ from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
 
+class Controls (models.Model):
+	belongs_to = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
+	havePRHunterAccount = models.CharField(max_length=512)
+	sendUpdates = models.CharField(max_length=512)
+
 class Campaigns(models.Model):
 	"""docstring for searches"""
 	belongs_to = models.ForeignKey(User, on_delete=models.CASCADE, default=000)

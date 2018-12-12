@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from .models import Searches, Campaigns, SearchResults
+from .models import Searches, Campaigns, SearchResults, Controls
 import requests
 import xml.etree.ElementTree as ET
 import difflib
@@ -33,7 +33,7 @@ def login(request):
 
 def search(request):
 	search_list = []
-	searchKey =request.GET.get('key' )
+	searchKey =request.GET.get('key1' ) + " " +request.GET.get('key2' ) +" " + request.GET.get('key3' ) +" " + request.GET.get('key4' )
 	search_list = makeSearchAPICall(searchKey)
 
 	uid = request.user.id
@@ -376,8 +376,13 @@ def saveNewUser(request):
 	email = request.POST.get('email')
 	next = request.POST.get('next')
 
+	havePRHunterAccount = 1 if  request.POST.get('havePRHunterAccount') == 'on' else 0 
+	sendUpdates = 1 if request.POST.get('sendUpdates') == 'on' else 0
+
 	try:
 		user = User.objects.create_user(username=username, email=email, password=password)
+		controls = Controls(havePRHunterAccount = havePRHunterAccount, sendUpdates = sendUpdates , belongs_to = user)
+		controls.save()
 		return HttpResponseRedirect("accounts/login?next="+next)
 	except:
 		return HttpResponseRedirect("/newUser?err=1")

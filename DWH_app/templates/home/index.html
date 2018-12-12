@@ -2,18 +2,25 @@
 
 {% block content %}
       <div id="index-banner" class="parallax-container">
-        <div class="section no-pad-bot">
+        <div class=" ">
           <div class="container">
-            <br><br>
-            <h1 class="header center teal-text text-lighten-2">Demo App</h1>
-            <div class="row center">
-             </div>
+            <h1 class="  center teal-text text-lighten-2">Demo App</h1>
+            
             <form action="search" methord = 'get'>
             <div class="row center">
             	<div class="header-search-wrapper">
-               		<input type="text" name="key" class="header-search-input z-depth-2" placeholder="Search here">
-            	</div>
+                  <input type="text" name="key1" id="key1" class="header-search-input z-depth-2" placeholder="Key word #1">
+                  <input type="text" name="key2" id="key2" class="header-search-input z-depth-2" placeholder="Key word #2">
+                  <input type="text" style='display:none' name="key3" id="key3" class="header-search-input z-depth-2" placeholder="Key word #3">
+               		<input type="text" style='display:none' name="key4" id="key4" class="header-search-input z-depth-2" placeholder="Key word #4">
+                  <button  id="addNewInputBtn" type='button' id="download-button" class="btn-small waves-effect waves-light teal lighten-1"> + </button>    
+                  <br/>
+                  <br/>
+              	</div>
               <button type='submit'  id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Search</button>
+              <br/>
+              <br/>
+              <label>Search for Domains, Websites, Apps, and other assets on Flippa, SEDO,and GoDaddy Auctions using multiple keywords</label>
               <!-- <a href="app/search" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">search </a> -->
             </div>
             <form>

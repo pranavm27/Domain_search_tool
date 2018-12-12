@@ -9,8 +9,8 @@
               <h5 class="header col s12 light">New Account</h5>
                          <label class="red-text text-darken-2">{{message}}</label> 
             </div>
-            <div class="row center">
-               <div class="row center">
+            <div class="row  ">
+               <div class="row  ">
 
                 <form class="col s12" action='saveNewUser', method='post'>
                   {% csrf_token %}
@@ -35,10 +35,22 @@
                       <label for="icon_telephone1">Password</label>
                     </div>
                   </div>
-                  <input type='hidden' value='{{next}}' name='next'>
-                  <button type='submit'> signup </button>
-                <br/>
-                <br/>
+                  <p>
+                    <label>
+                      <input type="checkbox"  name="havePRHunterAccount"/>
+                      <span>I have a PRHunters.com account</span>
+                    </label>
+                  
+                    <label>
+                      <input type="checkbox"  name="sendUpdates" />
+                      <span>Please keep send me updates and announcements about this tool and others</span>
+                    </label>
+                  </p>
+                  <div class="row center">
+                    <input type='hidden' value='{{next}}' name='next'>
+                    <button type='submit' class  = 'btn-small waves-effect waves-light teal lighten-1'> signup </button>
+                  </div>
+                  <div class="row center">
                 {% if user.is_authenticated %}
               </a> 
               {% elif request.path != '/newUser' %}
@@ -50,6 +62,8 @@
                   <a href="accounts/login/?next=/" id="download-button" class="  btn-small waves-effect waves-light teal lighten-1">Already have an account, Login</a>
                 {% endif %}
               {% endif %}
+            </div>
+                  
                 </form>
               </div>
             </div>
