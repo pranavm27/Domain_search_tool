@@ -134,10 +134,17 @@
       $(document).ready(function(){
         if($('#key3').val().length>0){
           $("#key3").css("display","block");
+          count = count + 1 ;
         }
         if($('#key4').val().length>0){
           $("#key4").css("display","block");
+          count = count + 1;
         }
+
+        if(count  === maxCount){
+          $('#addNewInputBtn').css("display","none");
+        }
+
         $('.modal').modal();
       });
       
