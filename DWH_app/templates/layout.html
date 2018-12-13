@@ -132,6 +132,12 @@
       // Or with jQuery
 
       $(document).ready(function(){
+        if($('#key3').val().length>0){
+          $("#key3").css("display","block");
+        }
+        if($('#key4').val().length>0){
+          $("#key4").css("display","block");
+        }
         $('.modal').modal();
       });
       
