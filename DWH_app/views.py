@@ -154,7 +154,7 @@ def makeSearchAPICall(key):
 		for elm in arr_list:
 			miid = elm.img.extract()
 			miid = miid.get('id').split('_')[1]
-			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'godaddy.com', 'html_url': 'https://in.auctions.godaddy.com/trpItemListing.aspx?miid='+miid})
+			search_list.append({'domain' :  elm.text, 'tags': [],  'api':'godaddy.com', 'html_url': 'https://auctions.godaddy.com/trpItemListing.aspx?miid='+miid})
 
 	except :
 		raise print('godaddy err')
